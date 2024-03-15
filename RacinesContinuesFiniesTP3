@@ -1,0 +1,28 @@
+ERREUR
+! Soit n un entier naturel non nul. Dans cet exercice il sera question de calculer la valeur d’une racine continue finie
+!Une racine continue finie est une racine de la forme : 𝑟 = √𝑢0 + √𝑢1 + √… + √𝑢
+!Nous appellerons l’entier n la profondeur de la racine r et les valeurs u0, . . ., un les entrées de la raciner. Nous supposerons que ces entrées sont des nombres complexes
+
+!1. Proposer une structure de données pour représenter sur machine la racine continue finie (1).
+!2. Donner le code en fortran permettant de calculer la valeur d’une racine continue finie (cette valeur est un complexe).
+
+program RacinesContinuesFiniesTP3
+    implicit
+    complex, dimension(:), allocatable :: u
+    integer :: n
+    complex :: r
+    real :: ro,teta, x, y
+    integer :: i,j
+    write(*,*)
+    write(*,"('Rentrer les valeurs de u : ')",advance="no")
+    read(*,*) n
+
+    allocate(u(n))
+
+    do i=1,n
+        write(*,"('Rentrer la partie réelle de u',i1,' : ')",advance="no")
+        read(*,*) x
+        write(*,"('Rentrer la partie imaginaire de u',i1,' : ')",advance="no")
+        read(*,*) y
+        u(i) = (x,y)
+    end do
