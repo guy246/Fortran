@@ -1,0 +1,41 @@
+!L’objectif de cet exercice est d’écrire et de lire les entrées d’une matrice sur et via la sortie standard 
+!Écrire un programme permettant de lire puis d’afficher une matrice A ϵ M2x2 (R). Attention votre affichage doit être soigné
+
+program MatriceTP2
+    implicit none
+    real, dimension(2,2) :: A
+    integer :: l,c,i,j
+    
+    !l'utilisateur rentre les valeurs de la matrice 
+    write(*,*)
+    write(*,"('Taille de la matrice')")
+    write(*,"('Nombre de ligne :')",advance='no')
+    read*,l
+    write(*,"('Nombre de colonne :')",advance='no')
+    read*,c
+    write(*,*)
+
+    !l'utilisateur rentre les valeurs de la matrice
+    write(*,"('Merci de saisir (ligne par ligne) les entrees de la mat')")
+    do i=1,l
+        write(*,*)
+        write(*,"('Ligne ',2x,i4,' : ')")i
+        do j=1,c
+            write(*,"('col ',2x,i4,' : ')",advance='no')j
+            read*,A(i,j)
+        end do
+    end do
+
+    !afficahge de la matrice 
+    write(*,*)
+    write(*,"('Voici les entrees de la matrice:')")
+    do i=1,l
+        write(*,*)
+        do j=1,c
+            write(*,"(F5.2)",advance='no')A(i,j)
+        end do
+    end do
+    write(*,*)
+    stop "write and read matrices"
+
+end program MatriceTP2
