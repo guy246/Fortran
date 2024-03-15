@@ -20,6 +20,33 @@ program tp1NbPremier
         write(*,"('.'i4' est premier')")p
     end if 
 end program tp1NbPremier
+-------------------------------------------------
+!LISTE    
+program tp1NbPremier
+    implicit none
+    integer :: i,count,p,j
+    logical :: estPremier !logique est un type de variable qui peut prendre que deux valeurs .true. ou .false.
+    write(*,*)
+    write(*,"('Bienvenue dans liste premier')")
+    write(*,"('Veuillez indiquer votre entier limite :')",advance='no')!advance='no'sert à ne pas retourner à la ligne
+    read*,p
+    count=0
+    do i=2,p
+        estPremier=.true. !on suppose que i est premier
+        do j=2,i-1
+            if (mod(i,j)==0)then
+                estPremier=.false.
+            end if
+        end do
+
+        if(estPremier)then
+            count=count+1
+            write(*,'(I5,3X,I5)')count,i !I5 permet d'afficher un entier sur 5 caractères, 3X permet d'afficher 3 espaces
+        end if 
+    end do
+
+end program tp1NbPremier
 
     
+
 
