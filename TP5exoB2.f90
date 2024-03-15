@@ -1,3 +1,6 @@
+!-----------------------------------------------------------
+!Définition module (avant fonction)
+!-----------------------------------------------------------
 module m_moyenne
     contains
     function moyenne(tab)
@@ -84,6 +87,3 @@ program TP5exo22
     deallocate(VSS)
     stop "DroiteAuxMoindresCarres"
 end program TP5exo22
-    !--------------------------------------------------------
-    !Definition de la fonction externe de la moyenne
-    !--------------------------------------------------------
