@@ -1,0 +1,16 @@
+!Soient a = (x1, . . . , xn) et b = (y1, . . . , yn) deux uplets appartenant à Nn.
+!Notons par < l’ordre lexicographique stricte sur N^n. Ainsi, a< b s’il existe un entier k ϵ {0, . . ., n} tel que :
+! xi=yi pour tout i inférieur ou égal k, et xk+1 < yk+1.
+! écrire un code en fortran qui comparer deux vecteurs suivant l’ordre lexicographique
+
+program OdreLexico
+    implicit none
+    integer:: i
+    integer, parameter :: n=5
+    real,dimension(n):: u(5)=(/1.0,1.0,1.0,1.0,2.0/)
+    real ::r 
+    i=1
+    r=sqrt(u(n))
+    do i=n-1,&,-
+    
+    end program OdreLexico
