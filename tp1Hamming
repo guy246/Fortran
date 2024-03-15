@@ -1,0 +1,28 @@
+program tp1Hamming
+    implicit none
+    integer :: i,count,p,j
+    logical :: estPremier
+    write(*,*)
+    write(*,"('Bienvenue dans lister Hamming')")
+    write(*,"('Veuillez indiquer votre entier limite :')",advance='no')!advance='no'sert à ne pas retourner à la ligne
+    read*,p
+    count=0
+    do i=1,p,1
+        j=i
+        do while(mod(j,2)==0)
+            j=j/2
+        end do
+        do while(mod(j,3)==0)
+            j=j/3
+        end do
+        do while(mod(j,5)==0)
+            j=j/5
+        end do
+        if(j==1) then
+            count=count+1
+            write(*,"(I5,3X,I5)")count,i
+        end if
+    end do
+    stop "Fin du programme."
+    
+end program tp1Hamming
