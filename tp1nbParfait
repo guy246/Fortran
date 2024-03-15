@@ -1,0 +1,27 @@
+!écrire un code en fortran pour calculer les nombres parfaits
+program tp1nbParfait
+    implicit none !cette ligne sert à déclarer toutes les variables
+    integer :: N,sommediv,i,j
+    !call system("clear")!cette ligne sert à effacer l'écran
+    write(*,*)
+    write(*,"('Veuillez indiquer la limite N :')",advance='no')!advance='no'sert à ne pas retourner à la ligne
+    read*,N
+    sommediv=0
+    do i=2,N,1
+        sommediv=0
+        do j=1,i-1
+            if (mod(i,j)==0)then
+                sommediv=sommediv+j
+            end if
+        end do
+        if (sommediv==i)then
+            write(*,"('.'i4' est somme de ses diviseurs')")i !i4 sert afficher sur 4 colonnes
+        end if
+    end do
+end program tp1nbParfait
+
+
+
+    
+
+
