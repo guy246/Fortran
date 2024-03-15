@@ -1,0 +1,71 @@
+!Soit n un entier non nul donné. La norme de Frobenius, notée ‖M‖, d’une matrice M ϵ Mn×n(R) est :
+!‖M‖=√tr(M𝑡M) (2)
+!où Mt est la matrice transposée de M et
+!tr(M)=∑ mii, i=1
+!est la trace de la matrice M.
+!1. Ecrire un code en fortran permettant de calculer la norme de Frobenius d’une matrice carrée.
+
+program NormeFrobeniusTP3
+    implicit none
+    integer :: n, i, j
+    integer, dimension(:,:), allocatable :: M
+    integer, dimension(:,:), allocatable :: Mt
+    integer, dimension(:,:), allocatable :: Mm
+    real :: norme
+    write(*,*)
+    !faire une matrice aléatoire
+    n = 3
+    allocate(M(n,n))
+    do i = 1, n
+        do j = 1, n
+            M(i,j) = floor((rand()*49)+1)
+        end do
+    end do
+    !affciher cette matrice
+    write(*,"('La matrice M est :')")
+    do i = 1, n
+        do j = 1, n
+            write(*,"(4x,i4)",advance="no") M(i,j)
+        end do
+        write(*,*)
+    end do
+    write(*,*)
+
+    !la matrice transposée
+    write(*,"('La matrice transposée de M est :')")
+    Mt=transpose(M)
+    !afficher cette matrice
+    do i = 1, n
+        do j = 1, n
+            write(*,"(4x,i4)",advance="no") Mt(i,j)
+        end do
+        write(*,*)
+    end do
+    write(*,*)
+
+    !multiplier la matrice M par sa transposée
+    write(*,"('Le produit de M par sa transposée est :')")
+    Mm=matmul(M,Mt)
+    !afficher cette matrice
+    do i = 1, n
+        do j = 1, n
+            write(*,"(4x,i4)",advance="no") Mm(i,j)
+        end do
+        write(*,*)
+    end do
+    write(*,*)
+
+    !calculer la trace de la matrice M mutipliée par sa transposée
+    norme = 0
+    do i = 1, n
+        norme = norme + Mm(i,i)
+    end do
+    !calculer la racine carrée de la trace
+    norme = sqrt(norme)
+    !afficher la norme de Frobenius
+    write(*,*)
+    write(*,"('La norme de Frobenius de M est : ',F6.2)") norme
+    deallocate(M)   
+
+
+end program NormeFrobeniusTP3
