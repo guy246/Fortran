@@ -1,0 +1,23 @@
+!programme qui calculerait, étant donné un entier naturel n, la valeur du terme un.
+!Un+1=1/2Un+racine(1+cos(Un-1))
+!Uo=3, U1=racine(3)
+
+program RecurenceNonLineaireTP2
+    implicit none
+    integer :: n,cpt
+    real :: Un, Un1
+    write(*,*)
+    write(*,"('Veuillez indiquer le rang N :')",advance='no')!advance='no'sert à ne pas retourner à la ligne
+    read*,n
+    cpt=1 !on initialise le compteur a 1 cart sqrt(3) est le 2eme terme soit U1 (dans les consigne il n'est pas demander de print U0)
+    Un=3.0
+    Un1=sqrt(3.0)
+    do n=1,n-1
+        Un=Un1
+        Un1=0.5*Un+sqrt(1+cos(Un-1))
+        write(*,"('iteration ',2x,i4,':',3x,g14.6)")cpt,Un
+        cpt=cpt+1
+    end do
+    write(*,"('Le ',2x,i4,'-ieme terme vaut :',3x,g14.6)")n,Un1 !print Un1 prck celui d'avant on a print Un il manque donc un Un1 a print
+    stop "Fin reccurence non lineaire."
+end program RecurenceNonLineaireTP2
