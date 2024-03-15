@@ -1,0 +1,53 @@
+!Soit n un entier naturel non nul. Soit M une matrice appartenant à Mn×n (R). L’anti-transposée de la
+!matrice M est la matrice obtenue en permutant symétriquement ses éléments relativement à sa
+!diagonale secondaire. Par exemple, l’anti-transposée de la matrice A ci-dessous est la matrice B.
+!A = [2 7 13
+!   4 11 8
+!   8 9 14] , 
+!B = [14 8 13
+!   9 11 7
+!   8 4 2]
+!1. Donner un code en fortran déterminant l’anti-transposée d’une matrice carrée.Pour l’initialisation de la matrice vous utiliserez une
+!matrice aléatoire d’entiers tirés uniformément dans l’intervalle [1, 50]. Pour cela, vous utiliserez les
+!procédures rand() (retourne un nombre réel tiré uniformément dans l’intervalle [0, 1].) et floor() (arrondi
+!inférieur de son argument.). Enfin, votre affichage doit être identique à celui de la figure 1.
+
+program AntiTransposeeTP3
+    implicit none
+    integer:: n, i, j
+    integer, dimension(:,:), allocatable:: M
+    real:: x
+    write(*,*)
+    write(*,"('Bienvenue dans anti-transposeur version 1.0 : ')")
+    write(*,*)
+    write(*,"('  Ordre de la matrice (matrice caree) :')")
+    read*,n
+
+    !faire une matrice aléatoire carrée de taille 7
+    allocate(M(n,n))
+    do i=1,n
+        do j=1,n
+            x=rand()
+            M(i,j)=floor(50*x)+1
+        end do
+    end do
+
+    !affichage de la matrice
+    write(*,*)
+    write(*,"('  La matrice :')")
+    do i=1,n
+        do j=1,n
+            write(*,'(4x,i4)')(M(i,j),j=1,n)
+        end do
+    end do
+
+    !calcul de l'anti-transposée
+    write(*,*)
+    write(*,"('  L anti-transposee de la matrice :')")
+    do i=1,n
+        do j=1,n
+            write(*,'(4x,i4)')(M(n-j+1,n-i+1),j=1,n)
+        end do
+    end do
+    
+end program AntiTransposeeTP3
