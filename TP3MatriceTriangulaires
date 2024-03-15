@@ -1,0 +1,109 @@
+! soit T une matrice triangulaire. pour stocker les entrées de T on utilisera un vecteur t
+! Créer le type TMatrice permettant de stocker efficacement les matrices triangulaires
+!(supérieures). Ce type est formé des champs suivants : nombre de lignes (identique au nombre de
+!colonnes), le nom de la matrice (on précisera le nombre de caractères) et un tableau dynamique t
+!(représentation par lignes de T)
+
+program TP3MatriceTriangulaires
+    implicit none
+    !création du type TMatrice avec les champs demandés
+    type TMatrice
+        sequence
+        integer :: taille !nombre de lignes (identique au nombre de colonnes)
+        character(len=20) :: nom !len=20 permet de donner une taille maximale au nom de la matrice
+        integer,dimension(:), allocatable :: t !tableau dynamique, dimension sert
+    end type TMatrice
+    type(TMatrice) :: TMat
+
+    !déclaration des variables
+    integer :: Mincoef,Maxcoef,ordre,modif,i,j,pballocation,pi,tr,k,l
+    
+    !-------------------------------------
+    !Réaliser un programme qui permet de définir une matrice triangulaire supérieure d’ordre n (saisi par
+    !l’utilisateur) et initialisée de façon aléatoire dans un intervalle [Mincoef , Maxcoef ] défini aussi par
+    !l’utilisateur. 
+    !-------------------------------------
+
+    !saisir l'odre n de la matrice 
+    write(*,'(" Saisir l''ordre de la matrice (la taille) : ")',advance='no')
+    read*,TMat%taille
+
+    !la matrice contient n*(n+1)/2 éléments
+    ordre=((TMat%taille*(TMat%taille)+1)/2)
+
+    !allocation de la matrice
+    allocate(TMat%t(ordre),stat=pballocation)
+
+    !verification de l'allocation
+    if(pballocation>0)then
+        stop "Problème d'allocation"
+    end if
+    !verifier l'odre de la matrice
+    write(*,'("La matrice est de taille : ",I0)',advance='no') TMat%taille
+
+    !saisir les valeurs Mincoef et Maxcoef
+    write(*,'(" Saisir la valeur minimale de la matrice : ")',advance='no')
+    read*,Mincoef
+    write(*,'(" Saisir la valeur maximale de la matrice : ")',advance='no')
+    read*,Maxcoef
+
+    !initialiser de façon aléatoire les termes du vecteur t associé à la matrice T dans l'intervalle [Mincoef, Maxcoef] utiliser rand()
+    do i=1,ordre
+        TMat%t(i)=floor(Mincoef+rand()*(Maxcoef-Mincoef))
+    end do
+
+    !afficher matrice T obtenue sous forme de matrice carré incluant les zéros
+    write(*,'("La matrice T obtenue est : ")')
+    write(*,*)
+    do i=1,TMat%taille
+        do j=1,TMat%taille
+            if(j>i)then
+                write(*,'(I5)',advance='no') TMat%t((i-1)*i/2+j) !I5 permet de donner une taille de 5 caractères à l'entier
+            else
+                write(*,'(I5)',advance='no') 0
+            end if
+        end do
+        write(*,*)
+    end do
+
+    !proposer de modifié certain termes de la matrice, en définir le nombre et saisir leurs indices et leur nouvelle  valeur 
+    write(*,'(" Saisir le nombre de termes à modifier : ")',advance='no')
+    read*,modif
+    !modifier les termes de la matrice en utilisant l'expression π(i, j) = (i − 1)n − ((i−2)(i−1))/2 + (j − i + 1) 
+    do i=1,modif
+        pi=(i-1)*TMat%taille-((i-2)*(i-1))/2
+        k=i
+        l=j
+        write(*,'(" Saisir l''indice de la ligne : ")',advance='no')
+        read*,k
+        write(*,'(" Saisir l''indice de la colonne : ")',advance='no')
+        read*,l
+        write(*,'(" Saisir la nouvelle valeur : ")',advance='no')
+        read*,TMat%t(pi+l-k+1)
+    end do
+    !afficher la matrice modifiée
+    write(*,'("La matrice T modifiée est : ")')
+    do i=1,TMat%taille
+        do j=1,TMat%taille
+            if(j>i)then
+                write(*,'(I5)',advance='no') TMat%t((i-1)*i/2+j) !I5 permet de donner une taille de 5 caractères à l'entier
+            else
+                write(*,'(I5)',advance='no') 0
+            end if
+        end do
+        write(*,*)
+    end do
+    !afficher la solvabilité ou non d'une equation de type Ax=b où b est un vecteur quelconque
+    !calculer la trace de la matrice
+    !calculer le déterminant de la matrice
+    do i=1,TMat%taille
+        tr=tr+TMat%t((i-1)*i/2+i)
+    end do
+    if(tr==0)then
+        write(*,'("La matrice T n est pas solvable")')
+    else
+        write(*,'("La matrice T est solvable")')
+    end if
+    !libérer l'espace mémoire
+    deallocate(TMat%t)
+end program TP3MatriceTriangulaires
