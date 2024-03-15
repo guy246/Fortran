@@ -1,0 +1,87 @@
+program TP5exo2
+    !--------------------------------------------------------
+    !Definition fonction moyenne externe a la fonction
+    !--------------------------------------------------------
+    implicit none
+    interface
+        function moyenne(tab)
+            implicit none
+            real,dimension(:),intent(in) :: tab
+            real :: moyenne
+        end function moyenne
+    end interface
+    !-------------------------------------------------------
+    !Definition des variables
+    !-------------------------------------------------------
+    integer :: i,n
+    real :: B1,T0,E,Tmax0,Tmin0,Tmin,Tmax,moyT,moyVS,moyTVS,moyT2,a,b,eclin
+    real, dimension(:),allocatable :: T,VS,VSS
+    B1=3300!Kelvin-1
+    T0=300!Kelvin
+    E=10!V
+    !--------------------------------------------------------
+    !Lecture de l''etendue et du nombre de points
+    !--------------------------------------------------------
+    write(*,"(/,'Saisir l''etendue de mesure : ')",advance='no')
+    read *,Tmin0,Tmax0
+    write(*,"(/,'Saisir le nombre de temperatures de mesure n : ')",advance='no')
+    read *,n
+    write(*,*)
+    Tmin=Tmin0+273.15
+    Tmax=Tmax0+273.15
+    !--------------------------------------------------------
+    !Allocation de la memoire pour toutes les matrices
+    !--------------------------------------------------------
+    allocate(T(n))
+    allocate(VS(n))
+    allocate(VSS(n))
+    !---------------------------------------------------------
+    !Definition des vecteurs T,VS
+    !---------------------------------------------------------
+    T=(/(Tmin+(((i-1)*(Tmax-Tmin))/(n-1)),i=1,n)/)
+    write(*,"('Voici le vecteur T :')");write(*,*)T
+    VS=(E/2)*(tanh(B1/2*((T-T0)/(T*T0))))
+    write(*,*)
+    write(*,"('Voici le vecteur Vs :')");write(*,*)VS
+    !----------------------------------------------------------
+    !Moyenne de T,VS,T*VS et T²
+    !----------------------------------------------------------
+    moyT=moyenne(T)
+    moyVS=moyenne(VS)
+    moyTVS=moyenne(T*VS)
+    moyT2=moyenne(T*T)
+    !---------------------------------------------------------
+    !Definiton de a et b
+    !---------------------------------------------------------
+    a= (moyTVS-(moyVS*moyT))/(moyT2-(moyT*moyT))
+    b= (moyVS*moyT2-(moyTVS*moyT))/(moyT2-(moyT*moyT))
+    write (*,"('a='f14.6)",advance = 'no')a
+    write(*,*)
+    write (*,"('b='f14.6)",advance = 'no')b
+    !--------------------------------------------------------
+    !Definition de la droite aux moindres carres
+    !--------------------------------------------------------
+    VSS=a*T+b
+    !--------------------------------------------------------
+    !Ecart de linearite
+    !--------------------------------------------------------
+    eclin=maxval(VS-VSS)/maxval(VS)
+    write(*,*)
+    write (*,"('L''ecart de linearite vaut :'f14.6)",advance = 'no')eclin
+    write(*,*)
+    !--------------------------------------------------------
+    !On desalloue la memoire des vecteurs
+    !--------------------------------------------------------
+    deallocate(T)
+    deallocate(VS)
+    deallocate(VSS)
+    stop "DroiteAuxMoindresCarres"
+end program TP5exo2
+    !--------------------------------------------------------
+    !Definition de la fonction externe de la moyenne
+    !--------------------------------------------------------
+    function moyenne(tab)
+        real,dimension(:),intent(in) :: tab
+        real :: moyenne
+        moyenne=sum(tab)/size(tab)
+    end function moyenne
