@@ -1,0 +1,25 @@
+program tp1NbPremier
+    implicit none
+    integer :: i,temp,p
+    write(*,*)
+    write(*,"('Veuillez entrer un entier naturel :')",advance='no')!advance='no'sert à ne pas retourner à la ligne
+    read*,p
+    if(p==1)then
+        write(*,"('1 n est pas premier')")
+    end if
+    temp=1
+    do i=2,p-1,1
+        if (mod(p,i)==0)then
+            temp=0
+        end if
+    end do
+
+    if(temp==0)then
+        write(*,"('.'i4' n est pas premier')")p
+    else
+        write(*,"('.'i4' est premier')")p
+    end if 
+end program tp1NbPremier
+
+    
+
