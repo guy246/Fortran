@@ -1,0 +1,90 @@
+!a relation entre s et m est de la forme s=al*m+be+random où random
+!est une fonction aléatoire qui retourne un réel entre -1 et 1. On pourra utiliser la procédures rand() qui retourne
+!un nombre réel tiré uniformément dans l’intervalle [0, 1] pour construire la fonction random.
+!a=2 et b=5 sur la plage [0,9].
+!Définir l’ensemble des points de mesure à partir de la saisie de l’étendue de mesure [mmin, mmax] et du nombre
+!de points de mesure n. On supposera que l’intervalle entre chaque point de mesure est constant.
+!m représente la valeur moyenne
+
+!a=(s*m-s*m)/(m*m-m*m) et b=(s*m*m-s*m*m)/(m*m-m*m)
+
+program TP5DroiteMoindresCarres
+    !déclaration des variables
+    implicit none
+    integer :: n, i
+    real :: mmin, mmax, a, b, random, al, be, moy_m, moy_s, moy_ms, moy_m2
+    real, dimension(:), allocatable :: mtab, stab,ms,m2
+    
+    !initialisation des variables
+    al=2
+    be=5
+    !mmin=0
+    !mmax=9
+    write(*,"('Entrez le min : ')",advance='no')
+    read *,mmin
+    write(*,"('Entrez le max : ')",advance='no')
+    read *,mmax
+    write(*,*)
+    write(*,"('Entrez le nombre de points de mesure : ')",advance="no")
+    read *,n
+
+    !création du vecteurs associé au calcul a sans boucle 
+    allocate(mtab(n))
+    allocate(stab(n))
+    mtab= (/(mmin+(((i-1)*(mmax-mmin))/(n-1)),i=1,n)/)
+    
+    !création d'une variable radom qui donne en rand entre -1 et 1
+    random=2*rand()-1
+    stab=al*mtab+be+random
+    allocate(ms(n))
+    allocate(m2(n))
+    ms=mtab*stab
+    m2=mtab*mtab
+
+    !définir la fonction qui permet de calculer la valeur moyenne des différents vecteur avec la fonction prédéfinie sum
+    !moy_m=sum(mtab)/n
+    !moy_s=sum(stab)/n
+    !moy_ms=sum(ms)/n
+    !moy_m2=sum(m2)/n
+
+    moy_m=moyenne(mtab,n)
+    moy_s=moyenne(stab,n)
+    moy_ms=moyenne(ms,n)
+    moy_m2=moyenne(m2,n)
+    
+    !calculer les valeur a et b afficher 
+    a=(moy_ms-moy_m*moy_s)/(moy_m2-moy_m*moy_m)
+    b=(moy_s*moy_m2-moy_ms*moy_m)/(moy_m2-moy_m*moy_m)
+    write(*,*)
+    write(*,"('La valeur de a : 'f8.6 )",advance='no')a
+    write(*,'("La valeur de b : "f8.6) ',advance="no")b
+
+    !comparer al et be avec a et b
+    write(*,*)
+    if (a==al) then
+        write(*,'("a est égale à al")')
+    else
+        write(*,'("a n’est pas égale à al")')
+    end if
+
+    !on définit l’écart de linéarité comme étant l’écart maximal entre la courbe de sortie et la droite aux moindres
+    !carrés divisé par la valeur maximale de la grandeur de sortie. Calculer cet écart et l’afficher.
+    write(*,*)
+    write(*,'("L’écart de linéarité est : ")',advance="no")
+    write(*,*)maxval(stab-(a*mtab+b))/maxval(stab)
+    
+stop "fin du programme"
+contains
+!définition de la fonction moyenne
+function moyenne(tab,n)
+    !déclaration des variables
+    real, dimension(:), intent(in) :: tab
+    integer, intent(in) :: n
+    real :: moyenne
+    !calcul de la moyenne
+    moyenne=sum(tab)/n
+end function moyenne
+
+
+end program TP5DroiteMoindresCarres
+
