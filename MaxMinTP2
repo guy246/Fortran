@@ -1,0 +1,51 @@
+!Soit A ϵ Mmxn (Z) une matrice donnée.
+!Donner le pseudo-code d’un algorithme permettant de calculer le maximum des minima des lignes de la matrice A.
+program MaxMinTP2 
+    implicit none
+    integer :: m, n, i, j
+    real :: max_val, min_val
+    real, allocatable :: A(:,:)
+    
+    ! Demander à l'utilisateur de saisir la taille de la matrice
+    write(*,*)
+    write(*,"('Taille de la matrice')")
+    write(*,"('Nombre de lignes :')", advance='no')
+    read*, m
+    write(*,"('Nombre de colonnes :')", advance='no')
+    read*, n
+    
+    ! Allouer la mémoire pour la matrice
+    allocate(A(m, n))
+    
+    ! Générer une matrice aléatoire
+    call random_number(A)
+    
+    ! Afficher la matrice A
+    write(*,"(' Matrice A :')")
+    do i = 1, m
+        do j = 1, n
+            write(*, "(F6.2)", advance='no') A(i, j)
+        end do
+        write(*, *)
+    end do
+    
+    ! Initialiser le maximum à une valeur très petite
+    max_val = 0.0
+    
+    ! Calculer le maximum des minima des lignes de la matrice A
+    do i = 1, m
+        min_val = A(i, 1)
+        do j = 2, n
+            if (A(i, j) < min_val) then
+                min_val = A(i, j)
+            end if
+        end do
+        if (min_val > max_val) then
+            max_val = min_val
+        end if
+    end do
+    
+    ! Afficher le résultat
+    write(*,"('Le maximum des minima des lignes de la matrice A est : ', F6.2)") max_val
+    
+end program MaxMinTP2
